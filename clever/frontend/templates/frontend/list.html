@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rest Apis</title>
+    <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'frontend/css/fontawesome-all.css' %}">
+    <script src="{%  static 'frontend/js/jquery.min.js' %}"></script>
+    <script src="{%  static 'frontend/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-8 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="col-md-8">
+                                <input type="text" name="item" id="item" placeholder="Enter Item name" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-outline-secondary">save item</button>
+                            </div>
+                        </div>
+                        <div class="col-md-11">
+                            <div class="card mt-3">
+                                <div class="">    
+                                    <div id="wrapper-list">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        listBuild()
+        function listBuild(){
+            var wrapper = document.getElementById("wrapper-list")
+            var url ="http://127.0.0.1:8000/tasks/task-list/"
+
+            fetch(url)
+            .then((resp) => resp.json())
+            .then(function(data){
+                console.log("Data:",data)
+                var list = data
+                for(var i in list){
+                    var item = `
+                      <div class="inline-block d-flex align-items-center justify-content-between" id='data-row-${i}'>
+                        <div class='d-flex'>
+                            <span>${list[i].task}</span>
+                        <a href="#" class="btn btn-sm">
+                            <span class="fa fa-pencil-alt text-secondary"></span>
+                        </a>
+                        <a href="#" class="btn btn-sm">
+                            <span class="fa fa-trash text-secondary"></span>
+                        </a>
+                    </div>
+
+                      </div>  
+                    `
+                    wrapper.innerHTML += item 
+                }
+            })
+        }
+    </script>
+</body>
+</html>
